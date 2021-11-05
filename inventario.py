@@ -88,7 +88,7 @@ def guardar_datos():
 
 def ver_contenido():
     #Este método solo servirá para ver el contenido del csv.
-    with open("D:\Javier Valle\Documents\Documentos\Python\Pruebas con Tkinter\Prueba 2\datos.csv", newline="") as File: 
+    with open("D:\Javier Valle\Documents\Documentos\Python\Pruebas con Tkinter\Prueba 2\Pruebas\datos.csv", newline="") as File: 
         reader = csv.reader(File)
         for fila in reader: 
             print(fila)
