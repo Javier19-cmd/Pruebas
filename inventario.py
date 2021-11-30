@@ -7,12 +7,14 @@ Sección de Referencias:
 Crear una ventana desde un método: https://www.youtube.com/watch?v=LbcVdgFUslk&ab_channel=LuisAlvarado
 Crear gráficos con Mathplotlib: https://www.youtube.com/watch?v=5OKzCXha4Co&t=104s&ab_channel=MagnoEfren
 """
+from os import write
 from tkinter import * #Importando todo lo de tkinter por prevención.
 import pandas as pd #Importando pandas para estadísticas. 
 import openpyxl
 import csv
 import matplotlib.pyplot as plt #Nuevo import
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg #Nuevo import.
+import xlsxwriter
 
 #Propieades de la ventana que ingresa los datos al csv.
 ventana = Tk()
@@ -37,32 +39,33 @@ tipo_objeto, talla_objeto, color_objeto, id_objeto = [],[],[],[]
 #Agregar dato al inventario.
 def agregar_datos():
     #Variables globales de las listas.
-    global tipo_objeto, talla_objeto, color_objeto, id_objeto 
+    global tipo_objeto, talla_objeto, color_objeto 
 
     #Agregando lo que ingresó el usuario en los textboxes a las listas.
     tipo_objeto.append(ingresa_tipo.get())
     talla_objeto.append(ingresa_talla.get())
     color_objeto.append(ingresa_color.get())
-    id_objeto.append(ingresa_ide.get())
+    #id_objeto.append(ingresa_ide.get())
 
     
     #Eliminando el texto que ya se agregó anteriormente.
     ingresa_tipo.delete(0, END)
     ingresa_talla.delete(0, END)
     ingresa_color.delete(0, END)
-    ingresa_ide.delete(0, END)
+    #ingresa_ide.delete(0, END)
 
 #Guardando datos
 def guardar_datos():
     #Variables globales de las listas.
-    global tipo_objeto, talla_objeto, color_objeto, id_objeto
+    global tipo_objeto, talla_objeto, color_objeto
 
+    """
     datos = [{"Tipo":tipo_objeto, "Talla":talla_objeto, "Color":color_objeto, "Id":id_objeto}] #Datos a enviar al excel.
     nom_excel = "D:\Javier Valle\Documents\Documentos\Python\Pruebas con Tkinter\Prueba 2\datos.csv" #Directorio exacto del archivo.
     
     try: 
         #Abriendo el archivo.
-        with open(nom_excel, 'w') as File:
+        with open(nom_excel, 'a') as File:
             field = ["Tipo", "Talla", "Color", "Id"] #Encabezado del inventario.
             writer = csv.DictWriter(File, field)
             writer.writeheader() #Escribiendo el encabezado.
@@ -75,6 +78,25 @@ def guardar_datos():
     except  IOError:
         print("Error")
     #File.close() #Cerrando el archivo.
+"""
+
+    #Abriendo el archivo.
+    libro = xlsxwriter.Workbook("datos.xlsx")
+    hoja = libro.add_worksheet()
+
+    #Enviando los datos.
+    datos=[["Tipo", "Talla", "Color"], [tipo_objeto, talla_objeto, color_objeto]]
+
+    #Posicionándose en la primera fila
+    row = 0
+    col = 0
+
+    for j in range(len(datos)):
+        for i in range(len(datos[j])):
+            hoja.write(j,i,datos[j][i])
+
+    
+    libro.close()
 
     #print("Hoja activa")
     #wb = openpyxl.Workbook(nom_excel)
@@ -87,41 +109,14 @@ def guardar_datos():
     #nombre_archivo.delete(0, END)
 
 def ver_contenido():
+
     #Este método solo servirá para ver el contenido del csv.
     with open("D:\Javier Valle\Documents\Documentos\Python\Pruebas con Tkinter\Prueba 2\Pruebas\datos.csv", newline="") as File: 
         reader = csv.reader(File)
         for fila in reader: 
             print(fila)
-    
-    #Creando la ventana para ver las estadísticas en este método.
-    ventana2=Toplevel()
-    ventana2.geometry('380x300')
-    #ventana2.configure(background='dark turquoise')
-    ventana2.title("Inventario")
-    #Nuevas cosas.
-    frame = Frame(ventana2, bg='blue')
-    frame.grid(column=0,row=0,sticky='nsew')
-    
-    #Pruebas de la gráfica
-    nombres = ['Azul','Rojo','Verde','Magenta','Negro']
-    colores = ['blue','red','green','magenta','black']
-    tamano = [15,25,10,20,30]
 
-    #Configurando gráfica
-    fig, axs = plt.subplots(1,3, figsize=(13,4), sharey=True, facecolor="#00f9f844")
 
-    #Título de la gráfica
-    fig.suptitle("Gráficas con Mathplotlib")
-
-    axs[0].bar(nombres, tamano, color = colores)
-    axs[1].scatter(nombres, tamano, color = colores)
-    axs[2].plot(nombres, tamano, color = "m")
-
-    #Configurando el canvas.
-    canvas = FigureCanvasTkAgg(fig, master = frame) #Crea el área de dibujo en Tkinter.
-    canvas.draw()
-    canvas.get_tk_widget().grid(column=0, row=0, rowspan=3)
-    
 #Propiedades de la ventana que ingresa el formulario al csv.
 frame1 = Frame(ventana, bg="gray15")
 frame1.grid(column=0, row=0, sticky="nsew")
@@ -155,9 +150,9 @@ ingresa_color = Entry(frame1, width=20, font =("Arial", 12)) #Formato para el co
 ingresa_color.grid(column=1, row=2) #Columna y fila del color de objeto.
 
 #Id
-id = Label(frame1, text = "Id", width=10).grid(column=0, row=3, pady=20, padx= 10) #Formato para el id del objeto.
-ingresa_ide = Entry(frame1, width=20, font =("Arial", 12)) #Formato para el id del objeto.
-ingresa_ide.grid(column=1, row=3) #Columna y fila del id de objeto.
+#id = Label(frame1, text = "Id", width=10).grid(column=0, row=3, pady=20, padx= 10) #Formato para el id del objeto.
+#ingresa_ide = Entry(frame1, width=20, font =("Arial", 12)) #Formato para el id del objeto.
+#ingresa_ide.grid(column=1, row=3) #Columna y fila del id de objeto.
 
 #Dando formato a los botones.
 
