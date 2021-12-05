@@ -6,6 +6,7 @@
 Sección de Referencias:
 Crear una ventana desde un método: https://www.youtube.com/watch?v=LbcVdgFUslk&ab_channel=LuisAlvarado
 Crear gráficos con Mathplotlib: https://www.youtube.com/watch?v=5OKzCXha4Co&t=104s&ab_channel=MagnoEfren
+Agregando cosas a un archivo csv: https://www.youtube.com/watch?v=mtNK9mL58t8&ab_channel=AlexNarváezProgramming
 """
 from os import write
 from tkinter import * #Importando todo lo de tkinter por prevención.
@@ -107,6 +108,13 @@ frame1 = Frame(ventana, bg="gray15")
 frame1.grid(column=0, row=0, sticky="nsew")
 frame2 = Frame(ventana, bg="gray16")
 frame2.grid(column=1, row=0, sticky="nsew")
+
+def abrir_ventana():
+    ventana.withdraw()
+    ventana.config(bg="white")
+    ventana.geometry("550x180")
+    ventana.resizable(0,0)
+    ventana.title("Ver datos")
 
 
 """
