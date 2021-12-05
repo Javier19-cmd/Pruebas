@@ -109,13 +109,6 @@ frame1.grid(column=0, row=0, sticky="nsew")
 frame2 = Frame(ventana, bg="gray16")
 frame2.grid(column=1, row=0, sticky="nsew")
 
-def abrir_ventana():
-    ventana.withdraw()
-    ventana.config(bg="white")
-    ventana.geometry("550x180")
-    ventana.resizable(0,0)
-    ventana.title("Ver datos")
-
 
 """
 #Propiedades de la ventana que ve el contenido del csv.
